@@ -1,0 +1,51 @@
+body
+{
+    background: #2f5d91;
+}
+.card
+{
+    width: 90%;
+    max-width: 470px;
+    background: linear-gradient(135deg,#000 ,#2f5d91);
+    color: aquamarine;
+    margin: 100px auto 0;
+    border-radius: 20px;
+    padding: 40px 35px;
+    text-align: center;
+}
+.search
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.search input
+{
+    border: 0;
+    outline: 0;
+    background: #e2e4e7;
+    color: rgb(0, 0, 0);
+    padding: 10px 25px;
+    height: 3x;
+    width: 6px;
+    border-radius: 30px;
+    flex: 1;
+    margin-right: 16px;
+    font-size: 18px;
+}
+.search button
+{
+    border: 0;
+    outline: 0;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    background: #e2e4e7;
+
+}
+.search button img
+{
+    width: 15px;
+}
