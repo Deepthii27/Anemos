@@ -35,7 +35,11 @@
       </form>
 
       <div class="Weather">
-        <img src="Images/icons8-cloud-with-rain-48.png" class="weather-icon" />
+        <img
+          id="weathericon"
+          src="Images/icons8-cloud-with-rain-48.png"
+          class="weather-icon"
+        />
         <h1 id="tempElement" class="temp">26° c</h1>
         <h2 id="cityElement" class="city">India</h2>
 
@@ -43,7 +47,7 @@
           <div class="col">
             <img src="Images/humidity.png" />
             <div>
-              <p class="humidity">50%</p>
+              <p id="humidity">50%</p>
               <p>Humidity</p>
             </div>
           </div>
@@ -51,14 +55,13 @@
           <div class="col">
             <img src="Images/windspeed.png" />
             <div>
-              <p class="wind">15 km</p>
+              <p id="wind">15 km</p>
               <p>Wind Speed</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
     <script src="./app.js"></script>
   </body>
 </html>
