@@ -254,6 +254,7 @@ const fetchWeather = async (query) =>{
     const weatherIcon = document.getElementById("weathericon")
     const Humidity=document.getElementById("humidity")
     const Wind=document.getElementById("wind")
+    const BackImg=document.getElementById("backimg")
 
     console.log(query)
     
@@ -266,5 +267,11 @@ const fetchWeather = async (query) =>{
     weatherIcon.setAttribute("src",`https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`)
     Humidity.innerText=result.main.humidity+"%";
     Wind.innerText=result.wind.speed+"km";
+    BackImg.setAttribute("src",`/backgroundImages/${result.weather[0].icon}.jpg`)   
+    
+
+
+
+    //weather[0].description
 
 }
