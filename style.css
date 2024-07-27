@@ -13,6 +13,22 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+header {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1em 2em;
+}
+
+header .Logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
 .card {
