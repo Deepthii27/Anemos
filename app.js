@@ -1,13 +1,15 @@
 let API_KEY = "7570ca40b046a23d9acd58db170c9bc4"
 
-const searchElement=document.getElementById("searchbar")
-const searchBtnElement=document.getElementById("searchbtn")
+const searchElement = document.getElementById("searchbar")
+const searchBtnElement = document.getElementById("searchbtn")
 
-searchBtnElement.addEventListener("click",(e)=>{
+searchBtnElement.addEventListener("click", (e) => {
     e.preventDefault()
-    let query = searchElement.value    
+    let query = searchElement.value
     fetchWeather(query)
 })
+
+
 
 const cc = {
     "AF": "Afghanistan",
@@ -248,27 +250,27 @@ const cc = {
 }
 
 
-const fetchWeather = async (query) =>{
+const fetchWeather = async (query) => {
     const TempElement = document.getElementById("tempElement")
     const CityElement = document.getElementById("cityElement")
     const weatherIcon = document.getElementById("weathericon")
-    const Humidity=document.getElementById("humidity")
-    const Wind=document.getElementById("wind")
-    const BackImg=document.getElementById("backimg")
+    const Humidity = document.getElementById("humidity")
+    const Wind = document.getElementById("wind")
+    const BackImg = document.getElementById("backimg")
 
     console.log(query)
-    
+
     const result = await (await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${API_KEY}`)).json()
     console.log(result)
     console.log();
 
-    TempElement.innerText = Math.round(result.main.temp-273.15) + "° C";
-    CityElement.innerText= cc[result.sys.country];
-    weatherIcon.setAttribute("src",`https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`)
-    Humidity.innerText=result.main.humidity+"%";
-    Wind.innerText=result.wind.speed+"km";
-    BackImg.setAttribute("src",`/backgroundImages/${result.weather[0].icon}.jpg`)   
-    
+    TempElement.innerText = Math.round(result.main.temp - 273.15) + "° C";
+    CityElement.innerText = cc[result.sys.country];
+    weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`)
+    Humidity.innerText = result.main.humidity + "%";
+    Wind.innerText = result.wind.speed + "km";
+    BackImg.setAttribute("src", `/backgroundImages/${result.weather[0].icon}.jpg`)
+
 
 
 
