@@ -1,279 +1,78 @@
-let API_KEY = "7570ca40b046a23d9acd58db170c9bc4"
+// Paste your OpenWeatherMap key here (see note: keys in frontend code are visible to anyone)
+const API_KEY = "YOUR_API_KEY";
+const DEFAULT_CITY = "Bengaluru";
 
-const searchElement = document.getElementById("searchbar")
-const searchBtnElement = document.getElementById("searchbtn")
+const searchElement = document.getElementById("searchbar");
+const searchForm = document.querySelector(".search");
+const statusElement = document.getElementById("status");
+const panel = document.getElementById("weatherPanel");
 
-searchBtnElement.addEventListener("click", (e) => {
-    e.preventDefault()
-    let query = searchElement.value
-    fetchWeather(query)
-})
+// Replaces the old hand-written country table (and fixes UK/GB)
+const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 
+const skyFor = (icon) => {
+  const night = icon.endsWith("n");
+  const code = icon.slice(0, 2);
+  if (code === "01") return night ? "clear-night" : "clear-day";
+  if (["02", "03", "04"].includes(code)) return "clouds";
+  if (["09", "10"].includes(code)) return "rain";
+  if (code === "11") return "storm";
+  if (code === "13") return "snow";
+  return "mist";
+};
 
-
-const cc = {
-    "AF": "Afghanistan",
-    "AL": "Albania",
-    "DZ": "Algeria",
-    "AS": "American Samoa",
-    "AD": "Andorra",
-    "AO": "Angola",
-    "AI": "Anguilla",
-    "AQ": "Antarctica",
-    "AG": "Antigua and Barbuda",
-    "AR": "Argentina",
-    "AM": "Armenia",
-    "AW": "Aruba",
-    "AU": "Australia",
-    "AT": "Austria",
-    "AZ": "Azerbaijan",
-    "BS": "Bahamas",
-    "BH": "Bahrain",
-    "BD": "Bangladesh",
-    "BB": "Barbados",
-    "BY": "Belarus",
-    "BE": "Belgium",
-    "BZ": "Belize",
-    "BJ": "Benin",
-    "BM": "Bermuda",
-    "BT": "Bhutan",
-    "BO": "Bolivia",
-    "BQ": "Bonaire, Sint Eustatius and Saba",
-    "BA": "Bosnia and Herzegovina",
-    "BW": "Botswana",
-    "BV": "Bouvet Island",
-    "BR": "Brazil",
-    "IO": "British Indian Ocean Territory",
-    "BN": "Brunei Darussalam",
-    "BG": "Bulgaria",
-    "BF": "Burkina Faso",
-    "BI": "Burundi",
-    "CV": "Cabo Verde",
-    "KH": "Cambodia",
-    "CM": "Cameroon",
-    "CA": "Canada",
-    "KY": "Cayman Islands",
-    "CF": "Central African Republic",
-    "TD": "Chad",
-    "CL": "Chile",
-    "CN": "China",
-    "CX": "Christmas Island",
-    "CC": "Cocos (Keeling) Islands",
-    "CO": "Colombia",
-    "KM": "Comoros",
-    "CG": "Congo",
-    "CD": "Congo, Democratic Republic of the",
-    "CK": "Cook Islands",
-    "CR": "Costa Rica",
-    "CI": "Côte d'Ivoire",
-    "HR": "Croatia",
-    "CU": "Cuba",
-    "CW": "Curaçao",
-    "CY": "Cyprus",
-    "CZ": "Czechia",
-    "DK": "Denmark",
-    "DJ": "Djibouti",
-    "DM": "Dominica",
-    "DO": "Dominican Republic",
-    "EC": "Ecuador",
-    "EG": "Egypt",
-    "SV": "El Salvador",
-    "GQ": "Equatorial Guinea",
-    "ER": "Eritrea",
-    "EE": "Estonia",
-    "SZ": "Eswatini",
-    "ET": "Ethiopia",
-    "FK": "Falkland Islands (Malvinas)",
-    "FO": "Faroe Islands",
-    "FJ": "Fiji",
-    "FI": "Finland",
-    "FR": "France",
-    "GF": "French Guiana",
-    "PF": "French Polynesia",
-    "TF": "French Southern Territories",
-    "GA": "Gabon",
-    "GM": "Gambia",
-    "GE": "Georgia",
-    "DE": "Germany",
-    "GH": "Ghana",
-    "GI": "Gibraltar",
-    "GR": "Greece",
-    "GL": "Greenland",
-    "GD": "Grenada",
-    "GP": "Guadeloupe",
-    "GU": "Guam",
-    "GT": "Guatemala",
-    "GG": "Guernsey",
-    "GN": "Guinea",
-    "GW": "Guinea-Bissau",
-    "GY": "Guyana",
-    "HT": "Haiti",
-    "HM": "Heard Island and McDonald Islands",
-    "VA": "Holy See",
-    "HN": "Honduras",
-    "HK": "Hong Kong",
-    "HU": "Hungary",
-    "IS": "Iceland",
-    "IN": "India",
-    "ID": "Indonesia",
-    "IR": "Iran",
-    "IQ": "Iraq",
-    "IE": "Ireland",
-    "IM": "Isle of Man",
-    "IL": "Israel",
-    "IT": "Italy",
-    "JM": "Jamaica",
-    "JP": "Japan",
-    "JE": "Jersey",
-    "JO": "Jordan",
-    "KZ": "Kazakhstan",
-    "KE": "Kenya",
-    "KI": "Kiribati",
-    "KP": "Korea, Democratic People's Republic of",
-    "KR": "Korea, Republic of",
-    "KW": "Kuwait",
-    "KG": "Kyrgyzstan",
-    "LA": "Lao People's Democratic Republic",
-    "LV": "Latvia",
-    "LB": "Lebanon",
-    "LS": "Lesotho",
-    "LR": "Liberia",
-    "LY": "Libya",
-    "LI": "Liechtenstein",
-    "LT": "Lithuania",
-    "LU": "Luxembourg",
-    "MO": "Macao",
-    "MG": "Madagascar",
-    "MW": "Malawi",
-    "MY": "Malaysia",
-    "MV": "Maldives",
-    "ML": "Mali",
-    "MT": "Malta",
-    "MH": "Marshall Islands",
-    "MQ": "Martinique",
-    "MR": "Mauritania",
-    "MU": "Mauritius",
-    "YT": "Mayotte",
-    "MX": "Mexico",
-    "FM": "Micronesia",
-    "MD": "Moldova",
-    "MC": "Monaco",
-    "MN": "Mongolia",
-    "ME": "Montenegro",
-    "MS": "Montserrat",
-    "MA": "Morocco",
-    "MZ": "Mozambique",
-    "MM": "Myanmar",
-    "NA": "Namibia",
-    "NR": "Nauru",
-    "NP": "Nepal",
-    "NL": "Netherlands",
-    "NC": "New Caledonia",
-    "NZ": "New Zealand",
-    "NI": "Nicaragua",
-    "NE": "Niger",
-    "NG": "Nigeria",
-    "NU": "Niue",
-    "NF": "Norfolk Island",
-    "MK": "North Macedonia",
-    "MP": "Northern Mariana Islands",
-    "NO": "Norway",
-    "OM": "Oman",
-    "PK": "Pakistan",
-    "PW": "Palau",
-    "PS": "Palestine, State of",
-    "PA": "Panama",
-    "PG": "Papua New Guinea",
-    "PY": "Paraguay",
-    "PE": "Peru",
-    "PH": "Philippines",
-    "PN": "Pitcairn",
-    "PL": "Poland",
-    "PT": "Portugal",
-    "PR": "Puerto Rico",
-    "QA": "Qatar",
-    "RE": "Réunion",
-    "RO": "Romania",
-    "RU": "Russian Federation",
-    "RW": "Rwanda",
-    "BL": "Saint Barthélemy",
-    "SH": "Saint Helena, Ascension and Tristan da Cunha",
-    "KN": "Saint Kitts and Nevis",
-    "LC": "Saint Lucia",
-    "MF": "Saint Martin (French part)",
-    "PM": "Saint Pierre and Miquelon",
-    "VC": "Saint Vincent and the Grenadines",
-    "WS": "Samoa",
-    "SM": "San Marino",
-    "ST": "Sao Tome and Principe",
-    "SA": "Saudi Arabia",
-    "SN": "Senegal",
-    "RS": "Serbia",
-    "SC": "Seychelles",
-    "SL": "Sierra Leone",
-    "SG": "Singapore",
-    "SX": "Sint Maarten (Dutch part)",
-    "SK": "Slovakia",
-    "SI": "Slovenia",
-    "SB": "Solomon Islands",
-    "SO": "Somalia",
-    "ZA": "South Africa",
-    "GS": "South Georgia and the South Sandwich Islands",
-    "SS": "South Sudan",
-    "ES": "Spain",
-    "LK": "Sri Lanka",
-    "SD": "Sudan",
-    "SR": "Suriname",
-    "SJ": "Svalbard and Jan Mayen",
-    "SE": "Sweden",
-    "CH": "Switzerland",
-    "SY": "Syrian Arab Republic",
-    "TW": "Taiwan, Province of China",
-    "TJ": "Tajikistan",
-    "TZ": "Tanzania, United Republic of",
-    "TH": "Thailand",
-    "TL": "Timor-Leste",
-    "TG": "Togo",
-    "TK": "Tokelau",
-    "TO": "Tonga",
-    "TT": "Trinidad and Tobago",
-    "TN": "Tunisia",
-    "TR": "Turkey",
-    "TM": "Turkmenistan",
-    "TC": "Turks and Caicos Islands",
-    "TV": "Tuvalu",
-    "UG": "Uganda",
-    "UA": "Ukraine",
-    "US": "United States",
-    "UK": "United Kingdom"
-
-}
-
+const setStatus = (message) => {
+  statusElement.hidden = !message;
+  statusElement.innerText = message || "";
+};
 
 const fetchWeather = async (query) => {
-    const TempElement = document.getElementById("tempElement")
-    const CityElement = document.getElementById("cityElement")
-    const weatherIcon = document.getElementById("weathericon")
-    const Humidity = document.getElementById("humidity")
-    const Wind = document.getElementById("wind")
-    const BackImg = document.getElementById("backimg")
+  setStatus("Loading…");
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(query)}&units=metric&appid=${API_KEY}`
+    );
+    const result = await res.json();
 
-    console.log(query)
+    if (!res.ok) {
+      setStatus(
+        res.status === 404
+          ? `No city found for "${query}". Check the spelling and try again.`
+          : "Couldn't load weather. Check your API key and connection."
+      );
+      return;
+    }
 
-    const result = await (await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=${API_KEY}`)).json()
-    console.log(result)
-    console.log();
+    const w = result.weather[0];
+    document.getElementById("cityElement").innerText = result.name;
+    document.getElementById("countryElement").innerText =
+      countryNames.of(result.sys.country) || result.sys.country;
+    document.getElementById("tempElement").innerText = Math.round(result.main.temp) + "°";
+    document.getElementById("descElement").innerText = w.description;
+    document.getElementById("feelsElement").innerText =
+      "Feels like " + Math.round(result.main.feels_like) + "°";
+    document.getElementById("weathericon").src =
+      `https://openweathermap.org/img/wn/${w.icon}@2x.png`;
+    document.getElementById("humidity").innerText = result.main.humidity + "%";
+    document.getElementById("wind").innerText = Math.round(result.wind.speed * 3.6) + " km/h"; // API gives m/s
+    document.getElementById("pressure").innerText = result.main.pressure + " hPa";
 
-    TempElement.innerText = Math.round(result.main.temp - 273.15) + "° C";
-    CityElement.innerText = cc[result.sys.country];
-    weatherIcon.setAttribute("src", `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`)
-    Humidity.innerText = result.main.humidity + "%";
-    Wind.innerText = result.wind.speed + "km";
-    BackImg.setAttribute("src", `/backgroundImages/${result.weather[0].icon}.jpg`)
+    document.body.dataset.sky = skyFor(w.icon);
 
+    panel.classList.remove("loaded");
+    void panel.offsetWidth; // restart the animation
+    panel.classList.add("loaded");
+    setStatus("");
+  } catch (err) {
+    console.error(err);
+    setStatus("Network error. Please try again.");
+  }
+};
 
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const query = searchElement.value.trim();
+  if (query) fetchWeather(query);
+});
 
-
-    //weather[0].description
-
-}
+fetchWeather(DEFAULT_CITY);
