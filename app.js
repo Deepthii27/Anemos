@@ -201,6 +201,7 @@ document.addEventListener("click", (e) => { if (!form.contains(e.target)) closeL
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (searchInput.value.trim().toLowerCase() === "keerthi") { items = []; closeList(); return showSorry(); }
   if (active >= 0) return pick(items[active]);
   const q = searchInput.value.trim();
   if (!q) return;
@@ -210,6 +211,25 @@ form.addEventListener("submit", async (e) => {
     else setStatus(`No city found for "${q}". Check the spelling and try again.`);
   } catch (err) { setStatus(errText(err)); }
 });
+
+/* ---------- surprise ---------- */
+const sorry = $("sorry");
+function showSorry() {
+  const box = $("roses");
+  box.replaceChildren(...Array.from({ length: 45 }, () => {
+    const r = document.createElement("span");
+    r.className = "rose";
+    r.textContent = "🌹";
+    r.style.cssText = `left:${Math.random() * 96}%;font-size:${1.6 + Math.random() * 2.4}rem;` +
+      `animation-duration:${4 + Math.random() * 5}s;animation-delay:${-Math.random() * 9}s;` +
+      `--r:${Math.round(Math.random() * 360 - 180)}deg;--t:${Math.round(Math.random() * 92)}%`;
+    return r;
+  }));
+  sorry.hidden = false;
+}
+const hideSorry = () => { sorry.hidden = true; searchInput.value = ""; };
+sorry.addEventListener("click", hideSorry);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sorry.hidden) hideSorry(); });
 
 /* ---------- start ---------- */
 (async () => {

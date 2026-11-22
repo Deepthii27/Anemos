@@ -202,6 +202,28 @@ header h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.2re
 
 @media (max-height: 520px) and (orientation: landscape) { .temp { font-size: 4.5rem; } }
 
+/* "keerthi" surprise */
+.sorry {
+  position: fixed; inset: 0; z-index: 100; overflow: hidden; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem;
+  background: #fff; color: #c2185b; text-align: center; padding: 1.5rem;
+  animation: fadein 0.4s ease-out;
+}
+.sorry h1 {
+  position: relative; z-index: 2;
+  font-family: var(--font-display); font-weight: 800; letter-spacing: 0.02em;
+  font-size: clamp(2.4rem, 11vw, 6.5rem); line-height: 1;
+  text-shadow: 0 0 18px #fff, 0 0 6px #fff;
+  animation: beat 1.6s ease-in-out infinite;
+}
+.sorry p { position: relative; z-index: 2; font-size: 0.9rem; color: #b07a8c; text-shadow: 0 0 8px #fff; }
+.roses { position: absolute; inset: 0; pointer-events: none; }
+.rose { position: absolute; top: -12vh; line-height: 1; animation: rosefall linear infinite; }
+@keyframes rosefall { to { transform: translateY(125vh) rotate(var(--r)); } }
+@keyframes beat { 50% { transform: scale(1.05); } }
+@keyframes fadein { from { opacity: 0; } }
+
 @media (prefers-reduced-motion: reduce) {
+  .rose { animation: none !important; top: var(--t); }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
