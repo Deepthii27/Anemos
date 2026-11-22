@@ -6,6 +6,9 @@ const searchElement = document.getElementById("searchbar");
 const searchForm = document.querySelector(".search");
 const statusElement = document.getElementById("status");
 const panel = document.getElementById("weatherPanel");
+const backImg = document.getElementById("backimg");
+backImg.addEventListener("load", () => backImg.classList.add("ready"));
+backImg.addEventListener("error", () => backImg.classList.remove("ready"));
 
 // Replaces the old hand-written country table (and fixes UK/GB)
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
@@ -58,6 +61,8 @@ const fetchWeather = async (query) => {
     document.getElementById("pressure").innerText = result.main.pressure + " hPa";
 
     document.body.dataset.sky = skyFor(w.icon);
+    backImg.classList.remove("ready");
+    backImg.src = `backgroundImages/${w.icon}.jpg`; // your photos: 01d.jpg, 10n.jpg ...
 
     panel.classList.remove("loaded");
     void panel.offsetWidth; // restart the animation

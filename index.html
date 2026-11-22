@@ -2,39 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Anemos | Weather Insights</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,500;12..96,800&family=DM+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header>
-      <div class="Logo">
-        <img src="./Images/Logo.svg" alt="LOGO" width="100px" height="100px" />
-      </div>
-      <div class="text-container">
-        <h2>Anemos</h2>
-        <!-- <h2>Anemos</h2> -->
-      </div>
-    </header>
-    <img class="bi" id="backimg" src="Images/interface.jpg " />
+  <body data-sky="clear-day">
+    <div class="sky" aria-hidden="true">
+      <img class="bi" id="backimg" alt="" />
+    </div>
 
-    <div class="card">
-      <form class="search">
+    <header>
+      <img src="./Images/Logo.svg" alt="" width="40" height="40" />
+      <h2>Anemos</h2>
+    </header>
+
+    <main class="card">
+      <form class="search" autocomplete="off">
         <input
           id="searchbar"
           type="text"
-          placeholder="Enter city name"
+          placeholder="Search a city"
+          aria-label="City name"
           spellcheck="false"
         />
-
-        <button id="searchbtn" type="submit">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="2.5em"
-            height="2.5em"
-            viewBox="0 0 24 24"
-          >
+        <button id="searchbtn" type="submit" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
             <path
               fill="currentColor"
               d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0c.41-.41.41-1.08 0-1.49zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14"
@@ -43,34 +41,40 @@
         </button>
       </form>
 
-      <div class="Weather">
-        <img
-          id="weathericon"
-          src="Images/icons8-cloud-with-rain-48.png"
-          class="weather-icon"
-        />
-        <h1 id="tempElement" class="temp">26° c</h1>
-        <h2 id="cityElement" class="city">India</h2>
+      <p id="status" class="status" role="status" hidden></p>
 
-        <div class="details">
-          <div class="col">
-            <img src="Images/humidity.png" />
-            <div>
-              <p id="humidity">50%</p>
-              <p>Humidity</p>
-            </div>
-          </div>
+      <section class="Weather" id="weatherPanel">
+        <div class="place">
+          <h2 id="cityElement" class="city">Bengaluru</h2>
+          <p id="countryElement" class="country">India</p>
+        </div>
 
-          <div class="col">
-            <img src="Images/windspeed.png" />
-            <div>
-              <p id="wind">15 km</p>
-              <p>Wind Speed</p>
-            </div>
+        <div class="now">
+          <h1 id="tempElement" class="temp">26°</h1>
+          <div class="cond">
+            <img id="weathericon" class="weather-icon" alt="" src="" />
+            <p id="descElement">Light rain</p>
+            <p id="feelsElement" class="muted">Feels like 27°</p>
           </div>
         </div>
-      </div>
-    </div>
+
+        <dl class="details">
+          <div>
+            <dt>Humidity</dt>
+            <dd id="humidity">50%</dd>
+          </div>
+          <div>
+            <dt>Wind</dt>
+            <dd id="wind">15 km/h</dd>
+          </div>
+          <div>
+            <dt>Pressure</dt>
+            <dd id="pressure">1012 hPa</dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+
     <script src="./app.js"></script>
   </body>
 </html>

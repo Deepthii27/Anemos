@@ -44,6 +44,25 @@ body {
     radial-gradient(70vmax 50vmax at 85% 105%, var(--sky-b), transparent 70%),
     linear-gradient(170deg, var(--sky-a), color-mix(in srgb, var(--sky-a) 70%, var(--sky-b)));
   transition: background 0.8s ease;
+  overflow: hidden;
+}
+/* Photo from /backgroundImages fades in over the gradient (gradient is the fallback) */
+.sky .bi {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.sky .bi.ready { opacity: 1; }
+/* Darkens the photo so white text stays readable */
+.sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.5));
 }
 
 header {
@@ -186,5 +205,5 @@ header h2 {
 
 @media (prefers-reduced-motion: reduce) {
   .Weather.loaded .temp { animation: none; }
-  .sky { transition: none; }
+  .sky, .sky .bi { transition: none; }
 }
