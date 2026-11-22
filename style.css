@@ -173,7 +173,7 @@ header h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.2re
 
 /* 5-day */
 .daily { list-style: none; display: grid; gap: 0.35rem; }
-.daily li { display: grid; grid-template-columns: 4.6rem 40px 2.6rem 1fr 5rem; align-items: center; gap: 0.6rem; padding: 0.35rem 0; }
+.daily li { display: grid; grid-template-columns: 3.4rem 40px 2.6rem 1fr 5rem; align-items: center; gap: 0.6rem; padding: 0.35rem 0; }
 .daily .pop { font-size: 0.8rem; color: var(--ink-soft); }
 .daily .t { font-family: var(--font-display); text-align: right; white-space: nowrap; }
 .daily .t em { font-style: normal; color: var(--ink-soft); }
@@ -184,10 +184,10 @@ header h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.2re
   .panel { padding: 1rem; border-radius: 20px; }
   .tiles { gap: 0.5rem; }
   .tile b { font-size: 1.1rem; }
-  .daily li { grid-template-columns: 3.8rem 36px 2.3rem 1fr 4.4rem; gap: 0.4rem; }
+  .daily li { grid-template-columns: 3rem 36px 2.3rem 1fr 4.4rem; gap: 0.4rem; }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (pointer: fine) {
   header img { width: 44px; height: 44px; }
   header h2 { font-size: 1.4rem; }
   .search { max-width: 540px; }
@@ -198,6 +198,11 @@ header h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.2re
   .temp { font-size: clamp(7rem, 10vw, 9.5rem); }
   .hero-ico { width: 130px; height: 130px; }
   .hourly li { flex-basis: 1fr; flex: 1 0 5rem; }
+}
+
+@media (min-width: 600px) and (pointer: coarse) {
+  html { font-size: 118%; }
+  .wrap { max-width: 720px; }
 }
 
 @media (max-height: 520px) and (orientation: landscape) { .temp { font-size: 4.5rem; } }
@@ -212,7 +217,8 @@ header h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.2re
 .sorry h1 {
   position: relative; z-index: 2;
   font-family: var(--font-display); font-weight: 800; letter-spacing: 0.02em;
-  font-size: clamp(2.4rem, 11vw, 6.5rem); line-height: 1;
+  font-size: clamp(2rem, 9vw, 5rem); line-height: 1.1;
+  max-width: 100%; overflow-wrap: anywhere; text-wrap: balance;
   text-shadow: 0 0 18px #fff, 0 0 6px #fff;
   animation: beat 1.6s ease-in-out infinite;
 }
