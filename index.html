@@ -15,20 +15,25 @@
   <body data-sky="clear-day">
     <div class="sky" aria-hidden="true">
       <img class="bi" id="backimg" alt="" />
+      <div class="fx"></div>
     </div>
 
-    <header>
-      <img src="./Images/Logo.svg" alt="" width="40" height="40" />
-      <h2>Anemos</h2>
-    </header>
+    <div class="wrap">
+      <header>
+        <img src="./Images/Logo.svg" alt="" width="40" height="40" />
+        <h2>Anemos</h2>
+      </header>
 
-    <main class="card">
-      <form class="search" autocomplete="off">
+      <form class="search" id="searchForm" role="search" autocomplete="off">
         <input
           id="searchbar"
           type="text"
           placeholder="Search a city"
-          aria-label="City name"
+          aria-label="Search a city"
+          aria-autocomplete="list"
+          aria-controls="suggestions"
+          aria-expanded="false"
+          autocomplete="off"
           spellcheck="false"
         />
         <button id="searchbtn" type="submit" aria-label="Search">
@@ -39,41 +44,42 @@
             />
           </svg>
         </button>
+        <ul class="suggest" id="suggestions" role="listbox" hidden></ul>
       </form>
 
       <p id="status" class="status" role="status" hidden></p>
 
-      <section class="Weather" id="weatherPanel">
-        <div class="place">
-          <h2 id="cityElement" class="city">Bengaluru</h2>
-          <p id="countryElement" class="country">India</p>
-        </div>
+      <main class="grid" id="weatherPanel" hidden>
+        <section class="panel hero">
+          <div class="place">
+            <h2 id="cityElement" class="city"></h2>
+            <p id="countryElement" class="country"></p>
+            <p id="timeElement" class="muted"></p>
+          </div>
+          <div class="now">
+            <h1 id="tempElement" class="temp"></h1>
+            <div class="cond">
+              <div id="weathericon" class="hero-ico"></div>
+              <p id="descElement"></p>
+              <p id="feelsElement" class="muted"></p>
+              <p id="hiloElement" class="muted"></p>
+            </div>
+          </div>
+        </section>
 
-        <div class="now">
-          <h1 id="tempElement" class="temp">26°</h1>
-          <div class="cond">
-            <img id="weathericon" class="weather-icon" alt="" src="" />
-            <p id="descElement">Light rain</p>
-            <p id="feelsElement" class="muted">Feels like 27°</p>
-          </div>
-        </div>
+        <section class="panel"><div class="tiles" id="tiles"></div></section>
 
-        <dl class="details">
-          <div>
-            <dt>Humidity</dt>
-            <dd id="humidity">50%</dd>
-          </div>
-          <div>
-            <dt>Wind</dt>
-            <dd id="wind">15 km/h</dd>
-          </div>
-          <div>
-            <dt>Pressure</dt>
-            <dd id="pressure">1012 hPa</dd>
-          </div>
-        </dl>
-      </section>
-    </main>
+        <section class="panel wide">
+          <h3>Next 24 hours</h3>
+          <ul class="hourly" id="hourly"></ul>
+        </section>
+
+        <section class="panel wide">
+          <h3>5-day forecast</h3>
+          <ul class="daily" id="daily"></ul>
+        </section>
+      </main>
+    </div>
 
     <script src="./app.js"></script>
   </body>
