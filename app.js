@@ -1,4 +1,4 @@
-// Paste your OpenWeatherMap key here
+
 const API_KEY = "7570ca40b046a23d9acd58db170c9bc4";
 const DEFAULT_CITY = "Bengaluru";
 
@@ -117,7 +117,7 @@ function render(c, w, fc, air) {
   });
   const min = Math.min(...days.map((d) => d.lo)), max = Math.max(...days.map((d) => d.hi)), span = max - min || 1;
   $("daily").innerHTML = days.map((d, i) =>
-    `<li><span>${i === 0 ? "Today" : fmtDay(d.es[0].dt, tz, { weekday: "long" })}</span>${icon(kindFor(d.mid.weather[0].icon.replace("n", "d")), true)}<span class="pop">${Math.round(d.pop * 100)}%</span><div class="range"><i style="--l:${((d.lo - min) / span) * 100}%;--r:${100 - ((d.hi - min) / span) * 100}%"></i></div><span class="t"><em>${Math.round(d.lo)}°</em> ${Math.round(d.hi)}°</span></li>`).join("");
+    `<li><span>${i === 0 ? "Today" : fmtDay(d.es[0].dt, tz, { weekday: "short" })}</span>${icon(kindFor(d.mid.weather[0].icon.replace("n", "d")), true)}<span class="pop">${Math.round(d.pop * 100)}%</span><div class="range"><i style="--l:${((d.lo - min) / span) * 100}%;--r:${100 - ((d.hi - min) / span) * 100}%"></i></div><span class="t"><em>${Math.round(d.lo)}°</em> ${Math.round(d.hi)}°</span></li>`).join("");
 
   document.body.dataset.sky = themeFor(kind);
   backImg.classList.remove("ready");
@@ -232,8 +232,23 @@ sorry.addEventListener("click", hideSorry);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !sorry.hidden) hideSorry(); });
 
 /* ---------- start ---------- */
+const locate = () => new Promise((resolve, reject) => {
+  if (!navigator.geolocation) return reject(new Error("Geolocation not supported"));
+  navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 8000, maximumAge: 600000 });
+});
+
 (async () => {
   if (API_KEY === "YOUR_API_KEY") return setStatus("Add your OpenWeatherMap key to API_KEY in app.js.");
+
+  // 1) Try the visitor's current location
+  try {
+    setStatus("Finding your location…");
+    const { coords } = await locate();
+    const [place] = await get("/geo/1.0/reverse", { lat: coords.latitude, lon: coords.longitude, limit: 1 });
+    if (place) return loadCity(place); // has name, state, country, lat, lon
+  } catch (e) { /* denied, timed out or unsupported: fall back below */ }
+
+  // 2) Fall back to the default city
   try {
     const r = await geocode(DEFAULT_CITY, 1);
     if (r[0]) loadCity(r[0]);
